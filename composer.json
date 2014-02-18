@@ -1,0 +1,34 @@
+{
+  "name" : "rampage-php/auth",
+  "description" : "Auth framework based on ZF2 / rampage-php",
+  "require" : {
+    "rampage-php/framework" : ">= 1.0",
+    "zendframework/zend-authentication" : ">= 2.2"
+  },
+  "require-dev" : {
+    "phpunit/phpunit" : "~ 3.7"
+  },
+  "authors" : [ {
+    "name" : "Axel Helmert",
+    "email" : "staff@pro-unreal.de",
+    "role" : "lead-dev"
+  } ],
+  "keywords" : [ "zf2", "rampage", "authentication" ],
+  "support" : {
+    "issues" : "https://github.com/tux-rampage/rampage-auth/issues",
+    "source" : "https://github.com/tux-rampage/rampage-auth"
+  },
+  "autoload" : {
+    "psr-0" : {
+      "rampage\\auth\\" : "library"
+    }
+  },
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "1.0.x-dev"
+    }
+  },
+  "license" : "GPL-3.0+",
+  "type" : "library",
+  "homepage" : "https://github.com/tux-rampage/rampage-auth"
+}
