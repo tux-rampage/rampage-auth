@@ -26,6 +26,7 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Authentication\Result;
+use Zend\EventManager\EventManager;
 
 
 class EventBasedAuthAdapter extends AbstractAdapter implements EventManagerAwareInterface
@@ -110,6 +111,10 @@ class EventBasedAuthAdapter extends AbstractAdapter implements EventManagerAware
      */
     public function getEventManager()
     {
+        if (!$this->eventManager) {
+            $this->setEventManager(new EventManager());
+        }
+
         return $this->eventManager;
     }
 }
