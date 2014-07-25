@@ -18,6 +18,10 @@ use Zend\Stdlib\SplPriorityQueue;
 
 /**
  * Aggregates multiple authentication adapters
+ *
+ * This class is deprecated, use the more flexible EventBasedAuthAdapter
+ *
+ * @deprecated 1.0
  */
 class AuthAdapterComposite extends AbstractAdapter implements UserRepositoryAwareInterface
 {
@@ -62,7 +66,7 @@ class AuthAdapterComposite extends AbstractAdapter implements UserRepositoryAwar
         return $this;
     }
 
-	/**
+    /**
      * Inject dependencies into the given adapter
      *
      * @param AdapterInterface $adapter
@@ -90,7 +94,7 @@ class AuthAdapterComposite extends AbstractAdapter implements UserRepositoryAwar
     {
         $queue = clone $this->adapters;
 
-        foreach ($this->adapters as $adapter) {
+        foreach ($queue as $adapter) {
 
             $result = $adapter->authenticate();
             if ($result->isValid()) {
