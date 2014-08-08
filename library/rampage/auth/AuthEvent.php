@@ -22,16 +22,21 @@
 
 namespace rampage\auth;
 
-use Zend\EventManager\Event;
 use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Authentication\AuthenticationServiceInterface;
+use Zend\Authentication\Result;
+
+use Zend\EventManager\Event;
+
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 
 class AuthEvent extends Event implements ServiceLocatorAwareInterface
 {
     const EVENT_AUTHENTICATE = 'authenticate';
+    const EVENT_POST_AUTHENTICATE = 'authenticate.post';
+    const EVENT_CLEAR_AUTH = 'clearAuthentication';
 
     /**
      * @var AuthenticationService
@@ -42,6 +47,32 @@ class AuthEvent extends Event implements ServiceLocatorAwareInterface
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator = null;
+
+    /**
+     * @var Result
+     */
+    protected $result = null;
+
+    /**
+     * @return \Zend\Authentication\Result
+     */
+    public function getResult()
+    {
+        if (!$this->result) {
+            $this->result = new Result(Result::FAILURE, null);
+        }
+
+        return $this->result;
+    }
+
+    /**
+     * @param \Zend\Authentication\Result $result
+     */
+    public function setResult(Result $result)
+    {
+        $this->result = $result;
+        return $this;
+    }
 
     /**
      * @param mixed

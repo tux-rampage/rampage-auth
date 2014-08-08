@@ -94,6 +94,9 @@ class EventBasedAuthAdapter extends AbstractAdapter implements EventManagerAware
             $result = new Result(Result::SUCCESS, $result);
         }
 
+        $this->event->setResult($result);
+        $this->getEventManager()->trigger(AuthEvent::EVENT_POST_AUTHENTICATE, $this->event);
+
         return $result;
     }
 
