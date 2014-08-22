@@ -22,11 +22,15 @@
 
 namespace rampage\auth;
 
-use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Authentication\Adapter\AbstractAdapter;
-use Zend\EventManager\EventManagerInterface;
+use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\Adapter\ValidatableAdapterInterface;
 use Zend\Authentication\Result;
+
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\ListenerAggregateInterface;
 
 
 class EventBasedAuthAdapter extends AbstractAdapter implements EventManagerAwareInterface
@@ -47,6 +51,37 @@ class EventBasedAuthAdapter extends AbstractAdapter implements EventManagerAware
     public function __construct(AuthEvent $event = null)
     {
         $this->setEvent($event? : new AuthEvent());
+    }
+
+    /**
+     * Add an adapter to the event queue
+     *
+     * @param AdapterInterface $adapter
+     * @param int $priority
+     * @return \Zend\Authentication\Result
+     */
+    public function addAdapter(AdapterInterface $adapter, $priority = 1)
+    {
+        if ($adapter instanceof ListenerAggregateInterface) {
+            $this->getEventManager()->attachAggregate($adapter, $priority);
+            return $this;
+        }
+
+        $listener = function(AuthEvent $event) use ($adapter) {
+            if ($adapter instanceof ValidatableAdapterInterface) {
+                $adapter->setCredential($event->getCredential());
+                $adapter->setIdentity($event->getIdentity());
+            }
+
+            if ($adapter instanceof InjectAuthEventInterface) {
+                $adapter->setAuthEvent($event);
+            }
+
+            return $adapter->authenticate();
+        };
+
+        $this->getEventManager()->attach(AuthEvent::EVENT_AUTHENTICATE, $listener, $priority);
+        return $this;
     }
 
     /**
