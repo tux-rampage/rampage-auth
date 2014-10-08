@@ -57,7 +57,7 @@ class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwa
         return $this;
     }
 
-	/**
+    /**
      * {@inheritdoc}
      * @see \Zend\Authentication\Adapter\AdapterInterface::authenticate()
      */
