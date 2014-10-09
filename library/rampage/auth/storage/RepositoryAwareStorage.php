@@ -27,8 +27,8 @@ namespace rampage\auth\storage;
 use rampage\auth\UserRepositoryAwareInterface;
 use rampage\auth\UserRepositoryInterface;
 use rampage\auth\IdentityInterface;
+
 use Zend\Authentication\Storage\Session as SessionStorage;
-use Zend\Session\ManagerInterface as SessionManagerInterface;
 
 /**
  * Load identity from repo on demand
@@ -46,19 +46,9 @@ class RepositoryAwareStorage extends SessionStorage implements UserRepositoryAwa
     /**
      * @var IdentityInterface
      */
-    private $current = null;
+    protected $current = null;
 
     /**
-     * {@inheritdoc}
-     * @see \Zend\Authentication\Storage\Session::__construct()
-     */
-    public function __construct($namespace = null, $member = null, UserRepositoryInterface $repository = null, SessionManagerInterface $manager = null)
-    {
-        $this->repository = $repository;
-        parent::__construct($namespace, $member, $manager);
-    }
-
-	/**
      * {@inheritdoc}
      * @see \rampage\auth\UserRepositoryAwareInterface::setUserRepository()
      */
@@ -90,11 +80,15 @@ class RepositoryAwareStorage extends SessionStorage implements UserRepositoryAwa
             return true;
         }
 
+        if (!$this->repository) {
+            return false;
+        }
+
         $current = $this->read();
         return ($current === null);
     }
 
-	/**
+    /**
      * {@inheritdoc}
      * @see \Zend\Authentication\Storage\Session::read()
      */
@@ -106,7 +100,7 @@ class RepositoryAwareStorage extends SessionStorage implements UserRepositoryAwa
 
         $id = parent::read();
         if (!$id || !$this->repository) {
-            return null;
+            return $id;
         }
 
         $this->current = $this->repository->findOneByIdentity($id);
@@ -120,6 +114,7 @@ class RepositoryAwareStorage extends SessionStorage implements UserRepositoryAwa
     public function write($contents)
     {
         if (!$this->repository || !($contents instanceof IdentityInterface)) {
+            parent::write($contents);
             return $this;
         }
 
