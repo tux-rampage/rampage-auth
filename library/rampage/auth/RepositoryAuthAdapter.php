@@ -64,16 +64,16 @@ class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwa
     public function authenticate()
     {
         if (!$this->repository) {
-            return new Result(Result::FAILURE);
+            return new Result(Result::FAILURE, null);
         }
 
         $user = $this->repository->findOneByIdentity($this->getIdentity());
         if (!$user instanceof IdentityInterface) {
-            return new Result(Result::FAILURE_IDENTITY_NOT_FOUND);
+            return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null);
         }
 
         if (!$this->passwordStrategy->verify($this->getCredential(), $user->getCredentialHash())) {
-            return new Result(Result::FAILURE_CREDENTIAL_INVALID);
+            return new Result(Result::FAILURE_CREDENTIAL_INVALID, null);
         }
 
         return new Result(Result::SUCCESS, $user);
