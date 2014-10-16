@@ -24,7 +24,7 @@ class PasswordStrategy implements PasswordStrategyInterface
      * @param int $cost The crypt expensiveness (rounds)
      * @param string $salt The salt to use when crypting passwords
      */
-    public function __construct(crypt\PasswordCryptInterface $crypt)
+    public function __construct(crypt\PasswordCryptInterface $crypt = null)
     {
         if (!$crypt) {
             $crypt = (version_compare(PHP_VERSION, '5.5', '>='))? new crypt\PhpPasswordCrypt() : new crypt\McryptPasswordCrypt();
