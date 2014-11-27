@@ -22,6 +22,10 @@
 
 namespace rampage\auth\crypt;
 
+use InvalidArgumentException;
+use RuntimeException;
+
+
 class McryptPasswordCrypt extends AbstractPasswordCrypt implements PasswordCryptInterface
 {
     const PASSWORD_BCRYPT = 1;
@@ -37,8 +41,8 @@ class McryptPasswordCrypt extends AbstractPasswordCrypt implements PasswordCrypt
      */
     public function __construct($algorithm = null)
     {
-        if (($algorithm) && !is_int($algorithm)) {
-            throw new InvalidArgumentException(__METHOD__ . '() expects parameter 2 to be long, ' . gettype($algo) . ' given');
+        if (($algorithm !== null) && !is_int($algorithm)) {
+            throw new InvalidArgumentException(__METHOD__ . '() expects $algorithm to be long, ' . gettype($algorithm) . ' given');
         }
 
         $this->algorithm = ($algorithm !== null)? $algorithm : self::PASSWORD_DEFAULT;
