@@ -25,12 +25,19 @@
 namespace rampage\auth;
 
 
-interface UserRepositoryAwareInterface
+trait UserRepositoryAwareTrait
 {
     /**
-     * Inject the user repository
-     *
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository = null;
+
+    /**
      * @param UserRepositoryInterface $repository
      */
-    public function setUserRepository(UserRepositoryInterface $repository);
+    public function setUserRepository(UserRepositoryInterface $repository)
+    {
+        $this->userRepository = $repository;
+        return $this;
+    }
 }
