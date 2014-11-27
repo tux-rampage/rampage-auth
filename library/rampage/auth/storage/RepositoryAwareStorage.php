@@ -35,6 +35,8 @@ use Zend\Authentication\Storage\Session as SessionStorage;
  *
  * This auth storage will load the identity from the current repository on demand.
  * It also ensures that the only the identifier is stored in the session instead of the whole model
+ *
+ * @deprecated Use controller plugins/view helpers to obtain the user model
  */
 class RepositoryAwareStorage extends SessionStorage implements UserRepositoryAwareInterface
 {

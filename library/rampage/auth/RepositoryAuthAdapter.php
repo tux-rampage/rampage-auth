@@ -27,6 +27,13 @@ namespace rampage\auth;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
 
+
+/**
+ * Authenticate a user against any kind of repository
+ *
+ * Note: Since version 1.1 this will add the identity string and no longer the entity to the result,
+ * to stay compatible with ZF2 auth adapters
+ */
 class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwareInterface
 {
     /**
@@ -76,6 +83,6 @@ class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwa
             return new Result(Result::FAILURE_CREDENTIAL_INVALID, null);
         }
 
-        return new Result(Result::SUCCESS, $user);
+        return new Result(Result::SUCCESS, $user->getIdentity());
     }
 }

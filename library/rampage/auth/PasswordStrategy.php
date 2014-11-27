@@ -11,7 +11,7 @@ namespace rampage\auth;
 
 use RuntimeException;
 use InvalidArgumentException;
-use rampage\auth\crypt\PasswordCryptInterface;
+
 
 class PasswordStrategy implements PasswordStrategyInterface
 {
