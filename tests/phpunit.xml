@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./autoload.php" colors="true">
+    <testsuites>
+        <testsuite name="Rampage Framework Test Suite">
+            <directory>./rampagetest/</directory>
+        </testsuite>
+    </testsuites>
+
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+
+    <php>
+    </php>
+</phpunit>
