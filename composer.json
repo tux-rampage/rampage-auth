@@ -32,6 +32,9 @@
       "rampage\\auth\\" : "library"
     }
   },
+  "archive" : {
+    "exclude": [ "/tests" ]
+  },
   "license" : "GPL-3.0+",
   "type" : "library",
   "homepage" : "https://github.com/tux-rampage/rampage-auth"
