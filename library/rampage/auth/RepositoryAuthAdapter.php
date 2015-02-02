@@ -42,6 +42,11 @@ class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwa
     protected $repository = null;
 
     /**
+     * @var IdentityInterface
+     */
+    protected $authenticatedEntity = null;
+
+    /**
      * @var PasswordStrategyInterface
      */
     protected $passwordStrategy = null;
@@ -65,6 +70,14 @@ class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwa
     }
 
     /**
+     * @return IdentityInterface
+     */
+    public function getAuthenticatedEntity()
+    {
+        return $this->authenticatedEntity;
+    }
+
+    /**
      * {@inheritdoc}
      * @see \Zend\Authentication\Adapter\AdapterInterface::authenticate()
      */
@@ -83,6 +96,7 @@ class RepositoryAuthAdapter extends AbstractAdapter implements UserRepositoryAwa
             return new Result(Result::FAILURE_CREDENTIAL_INVALID, null);
         }
 
+        $this->authenticatedEntity = $user;
         return new Result(Result::SUCCESS, $user->getIdentity());
     }
 }
