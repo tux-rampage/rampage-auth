@@ -24,6 +24,7 @@ namespace rampage\auth\plugins;
 
 use rampage\auth\IdentityInterface;
 use rampage\auth\UserRepositoryAwareInterface;
+use rampage\auth\UserRepositoryAwareTrait;
 use rampage\auth\UserRepositoryInterface;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -39,24 +40,17 @@ use Zend\View\Renderer\RendererInterface;
  */
 class UserPlugin extends AbstractPlugin implements HelperInterface, UserRepositoryAwareInterface
 {
+    use UserRepositoryAwareTrait;
+
     /**
      * @var RendererInterface
      */
     protected $view = null;
 
     /**
-     * @var UserRepositoryInterface
+     * @var IdentityInterface
      */
-    protected $userRepository = null;
-
-    /**
-     * @param UserRepositoryInterface $repository
-     */
-    public function setUserRepository(UserRepositoryInterface $repository)
-    {
-        $this->userRepository = $repository;
-        return $this;
-    }
+    protected $entity = null;
 
     /**
      * {@inheritdoc}
@@ -97,12 +91,14 @@ class UserPlugin extends AbstractPlugin implements HelperInterface, UserReposito
      */
     public function __invoke()
     {
-        $identity = $this->identity();
+        if ($this->entity) {
+            $identity = $this->identity();
 
-        if ($identity && !($identity instanceof IdentityInterface)) {
-            return $this->userRepository->findOneByIdentity($identity);
+            if ($identity) {
+                $this->entity = $this->userRepository->findOneByIdentity($identity);
+            }
         }
 
-        return $identity;
+        return $this->entity;
     }
 }
