@@ -124,7 +124,7 @@ class EventBasedAuthAdapter extends AbstractAdapter implements EventManagerAware
         $result = $results->last();
 
         if (!$result) {
-            $result = new Result(Result::FAILURE, null, 'Authentication failed');
+            $result = new Result(Result::FAILURE, null, [ 'Authentication failed' ]);
         } else if (!$result instanceof Result) {
             $result = new Result(Result::SUCCESS, $result);
         }
