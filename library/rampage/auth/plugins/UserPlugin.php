@@ -91,7 +91,7 @@ class UserPlugin extends AbstractPlugin implements HelperInterface, UserReposito
      */
     public function __invoke()
     {
-        if ($this->entity) {
+        if (!$this->entity) {
             $identity = $this->identity();
 
             if ($identity) {
